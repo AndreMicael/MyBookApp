@@ -14,6 +14,7 @@ function Livros() {
   const [bookList, setBookList] = useState([]);
   const [config,setConfig] = useState(false);
   const [edit,setEdit] = useState(false);
+
   const handleFetch = async () => {
     try {
       console.log(`Fetching data from ${Api}`);
@@ -26,14 +27,19 @@ function Livros() {
   };
 
   const handleDelete = async (id) => {
-    try {
-      console.log(`Deletando Livro com Id ${id}`);
-      const res = await axios.delete(`${Api}/delete/${id}`);
-      console.log('Livro Deletado:', res.data);
-      handleFetch();
-      toast("Livro deletado com sucesso");
-    } catch (error) {
-      console.error('Erro ao deletar livro:', error);
+    const resposta = window.confirm('Deseja realmente deletar este livro?');
+    if (resposta) {
+      try {
+        console.log(`Deletando Livro com Id ${id}`);
+        const res = await axios.delete(`${Api}/delete/${id}`);
+        console.log('Livro Deletado:', res.data);
+        handleFetch();
+        toast("Livro deletado com sucesso");
+      } catch (error) {
+        console.error('Erro ao deletar livro:', error);
+      }
+    } else {
+      console.log('Operação de exclusão cancelada pelo usuário.');
     }
   };
 
